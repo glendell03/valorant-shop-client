@@ -30,10 +30,8 @@ export const Blur = styled.div`
 export const Container = styled.div`
   ${tw`
     h-full 
-    overflow-auto
     flex
     flex-col
-    justify-between
     `}
 
   .react-multi-carousel-item {
@@ -56,5 +54,41 @@ export const CarouselItem = styled.div`
   h-full
   w-full
   p-5
+  cursor-pointer
+  select-none
   `}
+`;
+
+export const Skins = tw.div`
+    flex-1 
+    container
+    mx-auto
+   flex
+    items-center
+    justify-center 
+    overflow-hidden
+    my-20
+`;
+
+export const Names = styled.div`
+  ${tw`
+  flex
+  flex-col
+  justify-center
+  gap-6
+  p-10
+  text-white
+  h-full
+  overflow-auto
+  `}
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+export const Weapons = tw.div`
+flex-1
+flex 
+items-center
+justify-center
 `;
