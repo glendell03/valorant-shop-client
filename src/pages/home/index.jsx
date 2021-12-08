@@ -4,15 +4,16 @@ import { useSelector, useDispatch, batch } from "react-redux";
 import { fetchAllWeapons, resetWeaponsState } from "@/features/weaponsSlice";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import Button from "@/components/Button";
 
 const Home = () => {
   const dispatch = useDispatch();
   const { data } = useSelector((state) => state.weapons);
-
   const [weapons, setWeapons] = useState([]);
   const [skins, setSkins] = useState([]);
   const [selectedSkin, setSelectedSkin] = useState({});
-  const [active, setActive] = useState(null);
+  const [activeSkin, setActiveSkin] = useState(null);
+  const [activeWeapon, setActiveWeapon] = useState(null);
 
   useEffect(() => {
     batch(() => {
@@ -31,10 +32,6 @@ const Home = () => {
     setWeapons(data_copy);
   }, [data]);
 
-  useEffect(() => {
-    setSelectedSkin({});
-  }, [skins]);
-
   const handleGetSkins = (index) => {
     const data_copy = weapons[index].skins.filter(
       (item) =>
@@ -43,40 +40,54 @@ const Home = () => {
         item.displayName !== "Melee"
     );
     setSkins(data_copy);
+    setSelectedSkin(data_copy[0]);
+    setActiveSkin(data_copy[0].uuid);
+    setActiveWeapon(index);
   };
-
+  console.log(weapons);
   const renderWeaponNames = () => (
     <>
       {skins.map((item) => (
         <div
           key={item.uuid}
-          className="cursor-pointer select-none"
+          className="cursor-pointer select-none w-60"
           onClick={() => {
             setSelectedSkin(item);
-            setActive(item.uuid);
+            setActiveSkin(item.uuid);
           }}
         >
-          <span className={`${active === item.uuid && "text-red-400"}`}>
+          <p
+            className={`${
+              activeSkin === item.uuid &&
+              "text-vred-primary font-semibold drop-shadow-2xl"
+            } p-4`}
+          >
             {item.displayName}
-          </span>
+          </p>
         </div>
       ))}
     </>
   );
 
   const renderSelectedWeapon = () => (
-    <div>
-      <span className="select-none">
-        <img
-          src={selectedSkin.displayIcon}
-          alt={selectedSkin.displayName}
-          className="h-32 w-auto"
-          onDragStart={(e) => e.preventDefault()}
-        />
-      </span>
+    <div className="flex flex-col items-center justify-center gap-20">
+      {activeSkin !== null ? (
+        <>
+          <span className="select-none">
+            <img
+              src={selectedSkin.displayIcon}
+              alt={selectedSkin.displayName}
+              className="h-32 w-auto"
+              onDragStart={(e) => e.preventDefault()}
+            />
+          </span>
+          <Button>Buy</Button>
+        </>
+      ) : (
+        <span>No data</span>
+      )}
     </div>
   );
-  console.log(weapons);
 
   return (
     <S.Wrapper>
@@ -104,11 +115,12 @@ const Home = () => {
               <S.CarouselItem
                 key={item.uuid}
                 onClick={() => handleGetSkins(index)}
+                active={activeWeapon === index}
               >
                 <img
                   src={item.displayIcon}
                   alt={item.displayName}
-                  className="h-14 w-auto"
+                  className="h-16 w-full"
                   onDragStart={(e) => e.preventDefault()}
                 />
                 <span className="text-white text-center">

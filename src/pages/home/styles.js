@@ -46,6 +46,11 @@ export const CarouselItem = styled.div`
   -webkit-backdrop-filter: blur(4px);
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.18);
+  ${({ active }) =>
+    active &&
+    `
+      background: rgba(27, 51, 100, 0.8);
+    `}
   ${tw`
   flex
   flex-col
@@ -63,22 +68,18 @@ export const Skins = tw.div`
     flex-1 
     container
     mx-auto
-   flex
+    flex
     items-center
     justify-center 
     overflow-hidden
-    my-20
 `;
 
 export const Names = styled.div`
   ${tw`
+  max-h-96
   flex
   flex-col
-  justify-center
-  gap-6
-  p-10
   text-white
-  h-full
   overflow-auto
   `}
 
