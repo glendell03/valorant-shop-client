@@ -5,6 +5,7 @@ import { fetchAllWeapons, resetWeaponsState } from "@/features/weaponsSlice";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import Button from "@/components/Button";
+import ScrollIntoView from "react-scroll-into-view";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -44,27 +45,28 @@ const Home = () => {
     setActiveSkin(data_copy[0].uuid);
     setActiveWeapon(index);
   };
-  console.log(weapons);
+
   const renderWeaponNames = () => (
     <>
       {skins.map((item) => (
-        <div
+        <ul
           key={item.uuid}
+          id="top-item"
           className="cursor-pointer select-none w-60"
           onClick={() => {
             setSelectedSkin(item);
             setActiveSkin(item.uuid);
           }}
         >
-          <p
+          <li
             className={`${
               activeSkin === item.uuid &&
               "text-vred-primary font-semibold drop-shadow-2xl"
             } p-4`}
           >
             {item.displayName}
-          </p>
-        </div>
+          </li>
+        </ul>
       ))}
     </>
   );
@@ -112,21 +114,23 @@ const Home = () => {
             className="pb-10 mb-1"
           >
             {weapons.map((item, index) => (
-              <S.CarouselItem
-                key={item.uuid}
-                onClick={() => handleGetSkins(index)}
-                active={activeWeapon === index}
-              >
-                <img
-                  src={item.displayIcon}
-                  alt={item.displayName}
-                  className="h-16 w-auto"
-                  onDragStart={(e) => e.preventDefault()}
-                />
-                <span className="text-white text-center">
-                  {item.displayName}
-                </span>
-              </S.CarouselItem>
+              <ScrollIntoView selector="#top-item" className="w-full">
+                <S.CarouselItem
+                  key={item.uuid}
+                  onClick={() => handleGetSkins(index)}
+                  active={activeWeapon === index}
+                >
+                  <img
+                    src={item.displayIcon}
+                    alt={item.displayName}
+                    className="h-16 w-auto"
+                    onDragStart={(e) => e.preventDefault()}
+                  />
+                  <span className="text-white text-center">
+                    {item.displayName}
+                  </span>
+                </S.CarouselItem>
+              </ScrollIntoView>
             ))}
           </Carousel>
         </S.Container>
