@@ -120,7 +120,7 @@ const Home = () => {
                 <img
                   src={item.displayIcon}
                   alt={item.displayName}
-                  className="h-16 w-full"
+                  className="h-16 w-auto"
                   onDragStart={(e) => e.preventDefault()}
                 />
                 <span className="text-white text-center">
