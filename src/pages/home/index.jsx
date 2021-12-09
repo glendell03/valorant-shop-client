@@ -26,6 +26,7 @@ const Home = () => {
   const [activeSkin, setActiveSkin] = useState(null);
   const [activeWeapon, setActiveWeapon] = useState(null);
 
+  
   useEffect(() => {
     batch(() => {
       dispatch(resetWeaponsState());
