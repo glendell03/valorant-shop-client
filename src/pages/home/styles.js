@@ -74,13 +74,18 @@ export const Skins = tw.div`
     overflow-hidden
 `;
 
-export const Names = tw.div`
+export const Names = styled.div`
+  ${tw`
   max-h-96
   flex
   flex-col
   text-white
-  overflow-x-hidden
-  overflow-y-auto
+  overflow-auto
+  `}
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 export const Weapons = tw.div`
 flex-1

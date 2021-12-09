@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getAllWeapons } from "@/utils/weapons.routes";
 
 const initialState = {
-  data: [],
+  weaponsData: [],
   isError: false,
   isFetching: false,
   isSuccess: false,
@@ -42,12 +42,12 @@ export const weaponsSlice = createSlice({
     });
     builder.addCase(fetchAllWeapons.fulfilled, (state, action) => {
       state.isFetching = false;
-      state.data = action.payload.data;
+      state.weaponsData = action.payload.data;
       state.isSuccess = true;
     });
     builder.addCase(fetchAllWeapons.rejected, (state, action) => {
       state.isFetching = false;
-      state.data = [];
+      state.weaponsData = [];
       state.isError = true;
       state.errorMessage = action.payload.data;
     });

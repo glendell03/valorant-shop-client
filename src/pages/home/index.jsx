@@ -1,15 +1,25 @@
 import { useEffect, useState } from "react";
 import * as S from "./styles";
 import { useSelector, useDispatch, batch } from "react-redux";
-import { fetchAllWeapons, resetWeaponsState } from "@/features/weaponsSlice";
+import {
+  fetchAllWeapons,
+  resetWeaponsState,
+  selectorWeapons,
+} from "@/features/weaponsSlice";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import Button from "@/components/Button";
 import ScrollIntoView from "react-scroll-into-view";
+import {
+  fetchContentTierByUuid,
+  resetContentTierState,
+  SelectorContentTier,
+} from "@/features/contentTierSlice";
 
 const Home = () => {
   const dispatch = useDispatch();
-  const { data } = useSelector((state) => state.weapons);
+  const { weaponsData } = useSelector(selectorWeapons);
+  const { contentTierData } = useSelector(SelectorContentTier);
   const [weapons, setWeapons] = useState([]);
   const [skins, setSkins] = useState([]);
   const [selectedSkin, setSelectedSkin] = useState({});
@@ -24,14 +34,23 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    const data_copy = data.filter(
+    if (skins.length > 0) {
+      batch(() => {
+        dispatch(resetContentTierState());
+        dispatch(fetchContentTierByUuid(selectedSkin.contentTierUuid));
+      });
+    }
+  }, [selectedSkin]);
+
+  useEffect(() => {
+    const data_copy = weaponsData.filter(
       (item) =>
         item.displayIcon !== null &&
         !item.displayName.includes("Standard") &&
         item.displayName !== "Melee"
     );
     setWeapons(data_copy);
-  }, [data]);
+  }, [weaponsData]);
 
   const handleGetSkins = (index) => {
     const data_copy = weapons[index].skins.filter(
@@ -83,13 +102,25 @@ const Home = () => {
               onDragStart={(e) => e.preventDefault()}
             />
           </span>
-          <Button>Buy</Button>
+          <Button>{getGunPrice(contentTierData.devName)}</Button>
         </>
       ) : (
         <span>No data</span>
       )}
     </div>
   );
+
+  const getGunPrice = (devName) => {
+    let price = 0;
+    if (devName === "Select") price = 875;
+    else if (devName === "Deluxe") price = 1275;
+    else if (devName === "Premium") price = 1775;
+    else if (devName === "Exclusive") price = 2175;
+    else if (devName === "Ultra") price = 2475;
+    else price = 2675;
+
+    return price;
+  };
 
   return (
     <S.Wrapper>
@@ -114,9 +145,12 @@ const Home = () => {
             className="pb-10 mb-1"
           >
             {weapons.map((item, index) => (
-              <ScrollIntoView selector="#top-item" className="w-full">
+              <ScrollIntoView
+                selector="#top-item"
+                key={item.uuid}
+                className="w-full"
+              >
                 <S.CarouselItem
-                  key={item.uuid}
                   onClick={() => handleGetSkins(index)}
                   active={activeWeapon === index}
                 >
