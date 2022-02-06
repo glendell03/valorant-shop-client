@@ -49,7 +49,7 @@ export const userWeaponsSlice = createSlice({
       state.isFetching = false;
       state.weaponsData = [];
       state.isError = true;
-      state.errorMessage = action.payload.data;
+      state.errorMessage = action.payload.message;
     });
   },
 });

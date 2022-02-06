@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { useDispatch, useSelector, batch } from "react-redux";
 import {
   fetchAllWeapons,
@@ -6,34 +6,30 @@ import {
   selectorUserWeapons,
 } from "@/features/userWeaponsSlice";
 import Button from "@/components/Button";
-import { deleteWeapons } from "@/utils/weapons.routes";
+import { deleteWeapons, getUserWeapons } from "@/utils/weapons.routes";
 
 const Profile = () => {
   const dispatch = useDispatch();
-  const { weaponsData } = useSelector(selectorUserWeapons);
+  const { weaponsData, errorMessage } = useSelector(selectorUserWeapons);
 
   const [dataUuid, setDataUuid] = useState("");
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     batch(() => {
       dispatch(resetUserWeaponsState());
       dispatch(fetchAllWeapons());
     });
   }, []);
-  // console.log("state", weaponsData);
 
   const onClickdelete = (uuid) => {
     setDataUuid(uuid);
-    // deleteWeapons(uuid);
   };
 
   useEffect(() => {
+    deleteWeapons(dataUuid);
     batch(() => {
-      deleteWeapons(dataUuid);
-      batch(() => {
-        dispatch(resetUserWeaponsState());
-        dispatch(fetchAllWeapons());
-      });
+      dispatch(resetUserWeaponsState());
+      dispatch(fetchAllWeapons());
     });
   }, [dataUuid]);
 
@@ -43,7 +39,7 @@ const Profile = () => {
         <h1 className="text-center font-bold text-5xl py-10">MY WEAPONS</h1>
         <div className="my-10 flex flex-wrap gap-10 justify-center">
           {weaponsData.length === 0
-            ? "No Data"
+            ? errorMessage
             : weaponsData.map((data) => (
                 <div
                   key={data.id}
