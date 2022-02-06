@@ -17,6 +17,7 @@ import {
 } from "@/features/contentTierSlice";
 import { useCart } from "react-use-cart";
 import Cart from "@/components/Cart";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -156,9 +157,12 @@ const Home = () => {
       <S.Blur>
         <S.Container z={zIndex}>
           <div className="absolute top-0 right-0">
-            <span className="absolute top-0 right-10">
+            <span className="absolute top-0 right-10 flex gap-5">
               <Button onClick={onClickCart}>
                 {showCart ? "CLOSE" : `CART ${totalUniqueItems}`}
+              </Button>
+              <Button>
+                <Link to="/profile">PROFILE</Link>
               </Button>
             </span>
             {showCart && <Cart />}

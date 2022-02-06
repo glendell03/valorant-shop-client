@@ -19,6 +19,7 @@ const Cart = () => {
           displayIcon: i.displayIcon,
         }
       );
+      await emptyCart();
     });
   };
 
