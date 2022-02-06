@@ -15,6 +15,8 @@ import {
   resetContentTierState,
   SelectorContentTier,
 } from "@/features/contentTierSlice";
+import { useCart } from "react-use-cart";
+import Cart from "@/components/Cart";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -25,8 +27,10 @@ const Home = () => {
   const [selectedSkin, setSelectedSkin] = useState({});
   const [activeSkin, setActiveSkin] = useState(null);
   const [activeWeapon, setActiveWeapon] = useState(null);
+  const { addItem, totalUniqueItems, inCart } = useCart();
+  const [zIndex, setZIndex] = useState(1);
+  const [showCart, setShowCart] = useState(false);
 
-  
   useEffect(() => {
     batch(() => {
       dispatch(resetWeaponsState());
@@ -66,6 +70,15 @@ const Home = () => {
     setActiveWeapon(index);
   };
 
+  const handleAddtoCart = (skin, tier) => {
+    addItem({
+      id: skin.uuid,
+      price: getGunPrice(tier.devName),
+      displayName: skin.displayName,
+      displayIcon: skin.displayIcon,
+    });
+  };
+
   const renderWeaponNames = () => (
     <>
       {skins.map((item) => (
@@ -103,7 +116,14 @@ const Home = () => {
               onDragStart={(e) => e.preventDefault()}
             />
           </span>
-          <Button>{getGunPrice(contentTierData.devName)}</Button>
+          <Button
+            onClick={() => handleAddtoCart(selectedSkin, contentTierData)}
+            disabled={inCart(selectedSkin.uuid)}
+          >
+            {inCart(selectedSkin.uuid)
+              ? "Incart"
+              : getGunPrice(contentTierData.devName)}
+          </Button>
         </>
       ) : (
         <span>No data</span>
@@ -123,10 +143,26 @@ const Home = () => {
     return price;
   };
 
+  const onClickCart = () => {
+    setShowCart(!showCart);
+    if (showCart) {
+      setZIndex(1);
+    } else {
+      setZIndex(-1);
+    }
+  };
   return (
     <S.Wrapper>
       <S.Blur>
-        <S.Container>
+        <S.Container z={zIndex}>
+          <div className="absolute top-0 right-0">
+            <span className="absolute top-0 right-10">
+              <Button onClick={onClickCart}>
+                {showCart ? "CLOSE" : `CART ${totalUniqueItems}`}
+              </Button>
+            </span>
+            {showCart && <Cart />}
+          </div>
           <S.Skins>
             {skins.length > 0 ? (
               <>

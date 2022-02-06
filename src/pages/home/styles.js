@@ -37,6 +37,9 @@ export const Container = styled.div`
   .react-multi-carousel-item {
     ${tw`flex items-center justify-center mx-5`}
   }
+  .react-multi-carousel-list {
+    z-index: ${({z}) => z};
+  }
 `;
 
 export const CarouselItem = styled.div`

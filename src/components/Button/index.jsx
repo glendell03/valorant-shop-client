@@ -1,7 +1,7 @@
 import * as S from "./styles";
 
-const Button = ({ children }) => {
-  return <S.Wrapper>{children}</S.Wrapper>;
+const Button = ({ children, ...otherProps }) => {
+  return <S.Wrapper {...otherProps}>{children}</S.Wrapper>;
 };
 
 export default Button;
