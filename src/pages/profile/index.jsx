@@ -34,7 +34,7 @@ const Profile = () => {
   }, [dataUuid]);
 
   return (
-    <div className="bg-gray-900 h-full text-white">
+    <div className="bg-gray-900 min-h-screen text-white">
       <div className="container mx-auto">
         <h1 className="text-center font-bold text-5xl py-10">MY WEAPONS</h1>
         <div className="py-10 flex flex-wrap gap-10 justify-center h-full">
