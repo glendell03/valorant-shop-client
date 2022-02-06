@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector, batch } from "react-redux";
 import {
   fetchAllWeapons,
@@ -7,31 +7,29 @@ import {
 } from "@/features/userWeaponsSlice";
 import Button from "@/components/Button";
 import { deleteWeapons, getUserWeapons } from "@/utils/weapons.routes";
+import axios from "axios";
 
 const Profile = () => {
   const dispatch = useDispatch();
-  const { weaponsData, errorMessage } = useSelector(selectorUserWeapons);
+  const { weaponsData } = useSelector(selectorUserWeapons);
 
   const [dataUuid, setDataUuid] = useState("");
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     batch(() => {
       dispatch(resetUserWeaponsState());
       dispatch(fetchAllWeapons());
     });
   }, []);
+  // console.log("state", weaponsData);
 
   const onClickdelete = (uuid) => {
-    setDataUuid(uuid);
+    // setDataUuid(uuid);
+    deleteWeapons(uuid);
+    dispatch(fetchAllWeapons());
   };
 
-  useEffect(() => {
-    deleteWeapons(dataUuid);
-    batch(() => {
-      dispatch(resetUserWeaponsState());
-      dispatch(fetchAllWeapons());
-    });
-  }, [dataUuid]);
+  // useEffect(() => {}, [dataUuid]);
 
   return (
     <div className="bg-gray-900 min-h-screen text-white">
