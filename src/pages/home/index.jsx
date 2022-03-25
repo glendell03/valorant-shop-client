@@ -161,9 +161,9 @@ const Home = () => {
               <Button onClick={onClickCart}>
                 {showCart ? "CLOSE" : `CART ${totalUniqueItems}`}
               </Button>
-              <Button>
-                <Link to="/profile">PROFILE</Link>
-              </Button>
+              <Link to="/profile">
+                <Button>PROFILE</Button>
+              </Link>
             </span>
             {showCart && <Cart />}
           </div>

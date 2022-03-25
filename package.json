@@ -1,6 +1,7 @@
 {
   "name": "valorant-shop",
   "version": "0.0.0",
+  "proxy": "http://localhost:3000/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
