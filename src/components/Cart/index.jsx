@@ -4,6 +4,8 @@ import Button from "../Button";
 import axios from "axios";
 import { useEffect } from "react";
 
+const DB_URL = import.meta.env.VITE_DB_URL;
+
 const Cart = () => {
   const { items, updateItemQuantity, removeItem, emptyCart, cartTotal } =
     useCart();
@@ -11,14 +13,11 @@ const Cart = () => {
 
   const insertWeapon = () => {
     items.forEach(async (i) => {
-      await axios.post(
-        "http://localhost/valorant-shop-api/api/insertWeapon.php",
-        {
-          uuid: i.id,
-          displayName: i.displayName,
-          displayIcon: i.displayIcon,
-        }
-      );
+      await axios.post(`${DB_URL}/insertWeapon.php`, {
+        uuid: i.id,
+        displayName: i.displayName,
+        displayIcon: i.displayIcon,
+      });
       await emptyCart();
     });
   };
