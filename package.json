@@ -26,6 +26,7 @@
     "vite-plugin-babel-macros": "^1.0.5"
   },
   "devDependencies": {
+    "@babel/plugin-transform-react-jsx": "^7.17.3",
     "@vitejs/plugin-react": "^1.0.0",
     "autoprefixer": "^9",
     "postcss": "^8",
