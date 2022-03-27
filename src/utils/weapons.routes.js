@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const URL = process.env.VITE_VALORANT_API;
-const DB_URL = process.env.VITE_DB_URL;
+const URL = process.env.REACT_APP_VALORANT_API;
+const DB_URL = process.env.REACT_APP_DB_URL;
 
 export const getAllWeapons = () => axios.get(`${URL}/weapons`);
 
