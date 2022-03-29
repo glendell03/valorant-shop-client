@@ -3,22 +3,25 @@ import { useCart } from "react-use-cart";
 import Button from "../Button";
 import axios from "axios";
 import { useEffect } from "react";
+import { insertWeapons } from "utils/weapons.routes";
 
 const DB_URL = process.env.REACT_APP_DB_URL;
 
 const Cart = () => {
   const { items, updateItemQuantity, removeItem, emptyCart, cartTotal } =
     useCart();
-  console.log(items);
 
   const insertWeapon = () => {
     items.forEach(async (i) => {
-      await axios.post(`${DB_URL}/insertWeapon.php`, {
+      await insertWeapons({
         uuid: i.id,
         displayName: i.displayName,
         displayIcon: i.displayIcon,
+        quantity: i.quantity,
+        totalPrice: i.itemTotal,
       });
       await emptyCart();
+      console.log(i);
     });
   };
 

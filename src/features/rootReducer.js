@@ -3,6 +3,7 @@ import storage from "redux-persist/lib/storage";
 import contentTierSlice from "./contentTierSlice";
 import weaponsSlice from "./weaponsSlice";
 import userWeaponsSlice from "./userWeaponsSlice";
+import userSlice from "./userSlice";
 
 const weaponsSliceConfig = {
   key: "weapons",
@@ -19,8 +20,14 @@ const contentTierSliceConfig = {
   storage,
 };
 
+const userSliceConfig = {
+  key: "user",
+  storage,
+};
+
 export default {
   weapons: persistReducer(weaponsSliceConfig, weaponsSlice),
   userWeapons: persistReducer(userWeaponsSliceConfig, userWeaponsSlice),
   contentTier: persistReducer(contentTierSliceConfig, contentTierSlice),
+  user: persistReducer(userSliceConfig, userSlice),
 };

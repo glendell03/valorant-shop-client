@@ -17,7 +17,29 @@ import {
 } from "features/contentTierSlice";
 import { useCart } from "react-use-cart";
 import Cart from "components/Cart";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { logout, userSelector } from "features/userSlice";
+
+function AuthStatus() {
+  const { token } = useSelector(userSelector);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  if (!token) {
+    return <p>You are not logged in.</p>;
+  }
+
+  return (
+    <Button
+      onClick={() => {
+        dispatch(logout());
+        navigate("/login", { replace: true });
+      }}
+    >
+      Sign out
+    </Button>
+  );
+}
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -164,6 +186,7 @@ const Home = () => {
               <Link to="/profile">
                 <Button>PROFILE</Button>
               </Link>
+              <AuthStatus />
             </span>
             {showCart && <Cart />}
           </div>

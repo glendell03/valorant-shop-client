@@ -6,35 +6,12 @@ import {
   selectorUserWeapons,
 } from "features/userWeaponsSlice";
 import Button from "components/Button";
-import { deleteWeapons, getUserWeapons } from "utils/weapons.routes";
-import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "auth";
-
-function AuthStatus() {
-  let auth = useAuth();
-  let navigate = useNavigate();
-  console.log(auth);
-
-  if (!auth.user) {
-    return <p>You are not logged in.</p>;
-  }
-
-  return (
-    <Button
-      onClick={() => {
-        auth.signout(() => navigate("/"));
-      }}
-    >
-      Sign out
-    </Button>
-  );
-}
+import { deleteWeapons } from "utils/weapons.routes";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
   const dispatch = useDispatch();
   const { weaponsData, errorMessage } = useSelector(selectorUserWeapons);
-
-  const [dataid, setDataid] = useState("");
 
   useLayoutEffect(() => {
     batch(() => {
@@ -43,25 +20,17 @@ const Profile = () => {
     });
   }, []);
 
-  const onClickdelete = (id) => {
-    setDataid(id);
+  const onClickdelete = async (id) => {
+    await deleteWeapons(id);
+
+    await dispatch(resetUserWeaponsState());
+    await dispatch(fetchAllWeapons());
   };
-
-  useEffect(() => {
-    deleteWeapons(dataid);
-    batch(() => {
-      dispatch(resetUserWeaponsState());
-      dispatch(fetchAllWeapons());
-    });
-  }, [dataid]);
-
-  console.log(weaponsData);
 
   return (
     <div className="bg-gray-900 min-h-screen text-white">
       <div className="container mx-auto">
         <div className="flex gap-5">
-          <AuthStatus />
           <Link to="/">
             <Button>Buy</Button>
           </Link>
@@ -69,7 +38,7 @@ const Profile = () => {
         <h1 className="text-center font-bold text-5xl py-10">MY WEAPONS</h1>
         <div className="py-10 flex flex-wrap gap-10 justify-center h-full">
           {weaponsData.length === 0
-            ? errorMessage
+            ? "No Weapons Found. Buy Now!"
             : weaponsData.map((data) => (
                 <div
                   key={data.id}
@@ -82,8 +51,6 @@ const Profile = () => {
                     alt={data.displayName}
                     className="h-10 w-48"
                   />
-
-                  {/* DELETE BUTTON START HERE */}
 
                   <Button onClick={() => onClickdelete(data.id)}>Delete</Button>
                 </div>

@@ -42,14 +42,14 @@ export const userWeaponsSlice = createSlice({
     });
     builder.addCase(fetchAllWeapons.fulfilled, (state, action) => {
       state.isFetching = false;
-      state.weaponsData = action.payload.data;
+      state.weaponsData = action.payload;
       state.isSuccess = true;
     });
     builder.addCase(fetchAllWeapons.rejected, (state, action) => {
       state.isFetching = false;
       state.weaponsData = [];
       state.isError = true;
-      state.errorMessage = action.payload.message;
+      state.errorMessage = action.payload?.message;
     });
   },
 });
