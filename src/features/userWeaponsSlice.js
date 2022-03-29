@@ -1,5 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getUserWeapons } from "utils/weapons.routes";
+import axios from "axios";
+
+const DB_URL = process.env.REACT_APP_DB_URL;
 
 const initialState = {
   weaponsData: [],
@@ -11,9 +14,12 @@ const initialState = {
 
 export const fetchAllWeapons = createAsyncThunk(
   "/userWeapons",
-  async (_, { rejectWithValue }) => {
+  async (_, { rejectWithValue, getState }) => {
     try {
-      const res = await getUserWeapons();
+      const { token } = getState().user;
+      const res = await axios.get(`${DB_URL}/orders`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (res.status === 200) {
         return res.data;
       } else {

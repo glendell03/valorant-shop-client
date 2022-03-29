@@ -8,10 +8,15 @@ import {
 import Button from "components/Button";
 import { deleteWeapons } from "utils/weapons.routes";
 import { Link } from "react-router-dom";
+import { userSelector } from "features/userSlice";
+import axios from "axios";
+
+const DB_URL = process.env.REACT_APP_DB_URL;
 
 const Profile = () => {
   const dispatch = useDispatch();
   const { weaponsData, errorMessage } = useSelector(selectorUserWeapons);
+  const { token } = useSelector(userSelector);
 
   useLayoutEffect(() => {
     batch(() => {
@@ -21,7 +26,9 @@ const Profile = () => {
   }, []);
 
   const onClickdelete = async (id) => {
-    await deleteWeapons(id);
+    await axios.delete(`${DB_URL}/orders/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
     await dispatch(resetUserWeaponsState());
     await dispatch(fetchAllWeapons());

@@ -1,27 +1,34 @@
 import tw, { styled } from "twin.macro";
 import { useCart } from "react-use-cart";
 import Button from "../Button";
-import axios from "axios";
-import { useEffect } from "react";
 import { insertWeapons } from "utils/weapons.routes";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { userSelector } from "features/userSlice";
 
 const DB_URL = process.env.REACT_APP_DB_URL;
 
 const Cart = () => {
   const { items, updateItemQuantity, removeItem, emptyCart, cartTotal } =
     useCart();
+  const { token } = useSelector(userSelector);
 
   const insertWeapon = () => {
     items.forEach(async (i) => {
-      await insertWeapons({
-        uuid: i.id,
-        displayName: i.displayName,
-        displayIcon: i.displayIcon,
-        quantity: i.quantity,
-        totalPrice: i.itemTotal,
-      });
+      await axios.post(
+        `${DB_URL}/orders`,
+        {
+          uuid: i.id,
+          displayName: i.displayName,
+          displayIcon: i.displayIcon,
+          quantity: i.quantity,
+          totalPrice: i.itemTotal,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       await emptyCart();
-      console.log(i);
     });
   };
 

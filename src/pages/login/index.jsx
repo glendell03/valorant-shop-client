@@ -2,8 +2,7 @@ import { useEffect } from "react";
 import * as S from "./styles";
 import { FaArrowRight } from "react-icons/fa";
 import { useForm } from "react-hook-form";
-import { useNavigate, useLocation } from "react-router-dom";
-import { useAuth, AuthContext } from "auth";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   loginUser,

@@ -43,6 +43,7 @@ export const userSlice = createSlice({
     },
     logout: (state) => {
       storage.removeItem("persist:user");
+      storage.removeItem("token");
       state.token = "";
     },
   },
