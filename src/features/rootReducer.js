@@ -1,3 +1,4 @@
+/* eslint-disable import/no-anonymous-default-export */
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import contentTierSlice from "./contentTierSlice";
