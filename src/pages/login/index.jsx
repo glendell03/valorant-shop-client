@@ -15,8 +15,7 @@ import {
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isFetching, isSuccess, isError, errorMessage, token } =
-    useSelector(userSelector);
+  const { isSuccess, isError, errorMessage, token } = useSelector(userSelector);
 
   const {
     register,

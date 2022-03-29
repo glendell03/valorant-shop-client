@@ -3,10 +3,10 @@ import axios from "axios";
 const URL = process.env.REACT_APP_VALORANT_API;
 const DB_URL = process.env.REACT_APP_DB_URL;
 
-const token = JSON.parse(
-  JSON.parse(localStorage.getItem("persist:user")).token
-);
-const config = { headers: { Authorization: `Bearer ${token}` } };
+let token = JSON.parse(localStorage.getItem("persist:user"));
+const config = {
+  headers: { Authorization: `Bearer ${token?.token}` },
+};
 
 export const getAllWeapons = () => axios.get(`${URL}/weapons`);
 

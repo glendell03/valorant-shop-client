@@ -20,7 +20,6 @@ export const loginUser = createAsyncThunk(
   async ({ username, password }, { rejectWithValue }) => {
     try {
       const res = await logininUserRoute(username, password);
-      console.log(res);
       if (res.status === 201) {
         return res.data;
       } else {
